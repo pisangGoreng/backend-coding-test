@@ -1,5 +1,5 @@
-const httpResponses = require('./httpResponses')
+const httpResponses = require('./httpResponses');
 
 module.exports = {
-  httpResponses
-}
+  httpResponses,
+};

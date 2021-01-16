@@ -25,5 +25,5 @@ module.exports = Joi.object({
     .required(),
   driver_vehicle: Joi.string()
     .alphanum()
-    .required()
+    .required(),
 });
