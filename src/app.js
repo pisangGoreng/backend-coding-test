@@ -1,27 +1,38 @@
 const express = require('express');
 
 const app = express();
-// const validator = require('express-joi-validation').createValidator({
+const winston = require('winston');
 
-// })
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console(),
+  ],
+});
 
 const bodyParser = require('body-parser');
 
-const jsonParser = bodyParser.json();
-
-const { ridesSchema } = require('./JoiValidations');
 const { validateBody } = require('./middlewares');
 
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
 app.use(bodyParser.json());
+
+app.use((req, res, done) => {
+  logger.info(req.originalUrl);
+  done();
+});
 
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
 
   app.post('/rides', validateBody.submitRide, (req, res) => {
+    // logger.info('What rolls down stairs');
+    // logger.info('alone or in pairs,');
+    // logger.info('and over your neighbors dog?');
+    // logger.warn('Whats great for a snack,');
+    // logger.info('And fits on your back?');
+    // logger.error('Its log, log, log');
+
     const {
       start_lat: startLatitude,
       start_long: startLongitude,
@@ -47,7 +58,7 @@ module.exports = (db) => {
     const result = db.run(
       'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
       values,
-      function (err) {
+      (err) => {
         if (err) {
           return res.send({
             error_code: 'SERVER_ERROR',
@@ -58,7 +69,7 @@ module.exports = (db) => {
         db.all(
           'SELECT * FROM Rides WHERE rideID = ?',
           this.lastID,
-          (err, rows) => {
+          (error, rows) => {
             if (err) {
               return res.send({
                 error_code: 'SERVER_ERROR',
@@ -66,11 +77,14 @@ module.exports = (db) => {
               });
             }
 
-            res.send(rows);
+            return res.send(rows);
           },
         );
+
+        return result;
       },
     );
+    console.log('🚀 ~ file: app.js ~ line 87 ~ app.post ~ result', result);
   });
 
   app.get('/rides', (req, res) => {
@@ -89,7 +103,7 @@ module.exports = (db) => {
         });
       }
 
-      res.send(rows);
+      return res.send(rows);
     });
   });
 
@@ -111,7 +125,7 @@ module.exports = (db) => {
           });
         }
 
-        res.send(rows);
+        return res.send(rows);
       },
     );
   });
