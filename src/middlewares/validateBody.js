@@ -1,16 +1,18 @@
 const { rideSchema } = require('../JoiValidations');
-const { httpResponses } = require('../helpers');
+const { httpResponses, logger } = require('../helpers');
 
 module.exports = {
   submitRide: (req, res, next) => {
-    const { error } = rideSchema.validate(req.body, { abortEarly: false });
+    const { body, url } = req;
+    const { error } = rideSchema.validate(body, { abortEarly: false });
 
     if (error) {
-      res
+      logger.error(url, `failed validate when POST ${url}`, req.body);
+      return res
         .status(422)
         .json(httpResponses.validation(error.details));
     }
 
-    next();
+    return next();
   },
 };

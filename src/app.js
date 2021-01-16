@@ -1,37 +1,36 @@
 const express = require('express');
 
 const app = express();
-const winston = require('winston');
+// const winston = require('winston');
 
-const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-  ],
-});
+// const logger = winston.createLogger({
+//   transports: [
+//     new winston.transports.Console(),
+//   ],
+// });
 
 const bodyParser = require('body-parser');
 
 const { validateBody } = require('./middlewares');
+const { logger } = require('./helpers');
+// const logger = ;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
-app.use((req, res, done) => {
-  logger.info(req.originalUrl);
-  done();
-});
+// app.use((req, res, done) => {
+//   logger.info(req.originalUrl);
+//   done();
+// });
 
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
 
   app.post('/rides', validateBody.submitRide, (req, res) => {
-    // logger.info('What rolls down stairs');
-    // logger.info('alone or in pairs,');
-    // logger.info('and over your neighbors dog?');
-    // logger.warn('Whats great for a snack,');
-    // logger.info('And fits on your back?');
-    // logger.error('Its log, log, log');
+    const path = '/rides';
+
+    logger.info(path, 'add new record on rides table', req.body);
 
     const {
       start_lat: startLatitude,
