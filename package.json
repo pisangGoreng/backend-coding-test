@@ -8,7 +8,9 @@
   },
   "scripts": {
     "test": "mocha tests",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "clean-code": "eslint app index.* --ext .js --cache --color",
+    "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
   },
   "keywords": [
     "Xendit"
