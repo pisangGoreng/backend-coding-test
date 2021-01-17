@@ -1,0 +1,134 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "simple backend",
+    "description": "Simple documentation for backend",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8010",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Rides",
+      "description": "API for access ride in the system"
+    }
+
+  ],
+  "schemes": [ "http" ],
+  "consumes": [ "application/json" ],
+  "produces": [ "application/json" ],
+  "paths": {
+    "/rides": {
+      "get": {
+        "summary": "get all data ride",
+        "tags": [
+          "rides"
+        ],
+        "description": "get all data ride",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success get all data",
+            "schema": {
+              "$ref": "#/definitions/ride"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "insert new ride",
+        "tags": [
+          "rides"
+        ],
+        "description": "save new ride into table",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "ride schema",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ride"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success insert new data",
+            "schema": {
+              "$ref": "#/definitions/ride"
+            }
+          }
+        }
+      }
+    },
+    "/rides/{id}": {
+      "get": {
+        "summary": "get ride data by id",
+        "tags": [
+          "rides"
+        ],
+        "description": "get ride data by id",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ride id you want to search",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ride"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success get all data",
+            "schema": {
+              "$ref": "#/definitions/ride"
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "ride": {
+      "properties": {
+        "start_lat": {
+          "type": "integer"
+        },
+        "start_long": {
+          "type": "integer"
+        },
+        "end_lat": {
+          "type": "integer"
+        },
+        "end_long": {
+          "type": "integer"
+        },
+        "rider_name": {
+          "type": "string"
+        },
+        "driver_name": {
+          "type": "string"
+        },
+        "driver_vehicle": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

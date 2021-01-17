@@ -1,6 +1,6 @@
-const { database } = require('./src/configs');
+// const { database } = require('./src/configs');
 const { logger } = require('./src/helpers');
-const server = require('./src/app')(database);
+const server = require('./src/app');
 
 const port = 8010;
 

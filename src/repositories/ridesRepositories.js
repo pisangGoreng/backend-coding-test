@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
 const { db } = require('../configs');
+const { utils } = require('../helpers');
 
 module.exports = {
   getRide: (id) => {
@@ -7,7 +8,8 @@ module.exports = {
       db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, (err, row) => {
         if (err) { reject(err); }
 
-        resolve(row);
+        const modifiedRow = utils.convertRideKey(row, 'snakeCase');
+        resolve(modifiedRow);
       });
     });
 
@@ -16,10 +18,11 @@ module.exports = {
 
   getRides: () => {
     const getRides = new Promise((resolve, reject) => {
-      db.all('SELECT * FROM Rides', (err, row) => {
+      db.all('SELECT * FROM Rides', (err, rows) => {
         if (err) { reject(err); }
 
-        resolve(row);
+        const modifiedRows = utils.convertRideKey(rows, 'snakeCase');
+        resolve(modifiedRows);
       });
     });
 
@@ -31,10 +34,11 @@ module.exports = {
       db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', payloads, function (err) {
         if (err) { reject(err); }
 
-        db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, (error, rows) => {
+        db.all('SELECT * FROM Rides WHERE rideID = ?', this.lastID, (error, row) => {
           if (error) { reject(error); }
 
-          resolve(rows);
+          const modifiedRow = utils.convertRideKey(row, 'snakeCase');
+          resolve(modifiedRow);
         });
       });
     });

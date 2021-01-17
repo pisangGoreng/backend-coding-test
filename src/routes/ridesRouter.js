@@ -1,23 +1,23 @@
-const ridesRouter = require('express').Router();
+const router = require('express').Router();
 
 const { validateBody, validateParams } = require('../middlewares');
 const { ridesControllers } = require('../controllers');
 
-ridesRouter.get(
+router.get(
   '/rides',
   ridesControllers.getRides,
 );
 
-ridesRouter.get(
+router.get(
   '/rides/:id',
   validateParams.getRide,
   ridesControllers.getRide,
 );
 
-ridesRouter.post(
+router.post(
   '/rides',
   validateBody.submitRide,
   ridesControllers.insertRide,
 );
 
-module.exports = ridesRouter;
+module.exports = router;
