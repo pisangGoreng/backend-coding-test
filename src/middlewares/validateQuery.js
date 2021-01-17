@@ -16,7 +16,6 @@ module.exports = {
     });
 
     const { error } = querySchema.validate(query, { abortEarly: false });
-    console.log('🚀 ~ file: validateQuery.js ~ line 19 ~ error', error);
 
     if (error) {
       logger.error(url, `failed validate QUERY payload when GET ${url} pagination`, {
