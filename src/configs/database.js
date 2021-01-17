@@ -1,8 +1,6 @@
 const { open } = require('sqlite');
-
 const sqlite3 = require('sqlite3').verbose();
 
-// const buildSchemas = require('../schemas');
 const { logger } = require('../helpers');
 
 module.exports = async () => {
@@ -10,8 +8,27 @@ module.exports = async () => {
     logger.info('sqlite3', 'OPEN connection sqlite3');
     const db = await open({
       filename: ':memory',
+
       driver: sqlite3.Database,
     });
+
+    const createRideTableSchema = `
+    CREATE TABLE IF NOT EXISTS Rides
+      (
+      rideID INTEGER PRIMARY KEY AUTOINCREMENT,
+      startLat DECIMAL NOT NULL,
+      startLong DECIMAL NOT NULL,
+      endLat DECIMAL NOT NULL,
+      endLong DECIMAL NOT NULL,
+      riderName TEXT NOT NULL,
+      driverName TEXT NOT NULL,
+      driverVehicle TEXT NOT NULL,
+      created DATETIME default CURRENT_TIMESTAMP
+      )
+    `;
+
+    await db.run(createRideTableSchema);
+
     logger.info('sqlite3', 'SUCCESS connection sqlite3');
 
     return db;

@@ -1,10 +1,11 @@
 const router = require('express').Router();
 
-const { validateBody, validateParams } = require('../middlewares');
+const { validateBody, validateParams, validateQuery } = require('../middlewares');
 const { ridesControllers } = require('../controllers');
 
 router.get(
   '/rides',
+  validateQuery.getRide,
   ridesControllers.getRides,
 );
 

@@ -14,13 +14,13 @@ const convertRideKey = (payloads, caseFormat = 'snakeCase') => {
       created,
     }) => ({
       ride_id: rideID,
-      start_Lat: startLat,
-      start_Long: startLong,
-      end_Lat: endLat,
-      end_Long: endLong,
-      rider_Name: riderName,
-      driver_Name: driverName,
-      driver_Vehicle: driverVehicle,
+      start_lat: startLat,
+      start_long: startLong,
+      end_lat: endLat,
+      end_long: endLong,
+      rider_name: riderName,
+      driver_name: driverName,
+      driver_vehicle: driverVehicle,
       created,
     }));
   }

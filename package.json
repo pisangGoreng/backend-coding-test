@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha tests",
+    "test": "DEBUG=true nyc mocha tests/*.js --exit --inspect=0.0.0.0:9229 --timeout 120000",
     "start": "nodemon index.js",
     "clean-code": "eslint app index.* --ext .js --cache --color",
     "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
@@ -31,13 +31,16 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.3",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.3",
     "nodemon": "^2.0.7",
+    "nyc": "^15.1.0",
     "prettier": "2.2.1",
     "supertest": "^4.0.2"
   },

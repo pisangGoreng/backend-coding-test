@@ -6,7 +6,8 @@ const path = '/ride';
 module.exports = {
   getRide: async (id) => {
     try {
-      return await ridesRepositories.getRide(id);
+      const [selectedRide] = await ridesRepositories.getRide(id);
+      return selectedRide;
     } catch (error) {
       logger.error(path, 'failed get ride with id in ride service', error);
       throw new Error(JSON.stringify(error));
@@ -48,7 +49,9 @@ module.exports = {
 
   insertRide: async (payloads) => {
     try {
-      return await ridesRepositories.insertRide(payloads);
+      const [newRide] = await ridesRepositories.insertRide(payloads);
+
+      return newRide;
     } catch (error) {
       logger.error(path, 'failed insert new ride in ride service', error);
       throw new Error(JSON.stringify(error));

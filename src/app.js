@@ -10,7 +10,7 @@ const path = '/api/v1';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // route for access swagger documentation
 
 app.use(path, routes.ridesRouter);
 app.use(path, routes.healthRouter);
