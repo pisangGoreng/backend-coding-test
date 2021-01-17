@@ -7,8 +7,7 @@ module.exports = async () => {
   try {
     logger.info('sqlite3', 'OPEN connection sqlite3');
     const db = await open({
-      filename: ':memory',
-
+      filename: ':sampleDb',
       driver: sqlite3.Database,
     });
 

@@ -38,6 +38,7 @@ module.exports = {
     const database = await db();
     const saveRide = await database.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', payloads);
     const selectedRide = await database.all('SELECT * FROM Rides WHERE rideID = ?', saveRide.lastID);
+    await database.close();
 
     return utils.convertRideKey(selectedRide, 'snakeCase');
   },
