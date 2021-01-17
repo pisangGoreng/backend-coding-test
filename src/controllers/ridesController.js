@@ -3,13 +3,16 @@ const { ridesServices } = require('../services');
 
 module.exports = {
   getRide: async (req, res) => {
-    const { id } = req.params;
+    const { url, params } = req;
     try {
-      const result = await ridesServices.getRide(id);
+      logger.info(url, 'get ride data in ride controller');
+      const result = await ridesServices.getRide(params.id);
+
       return res
         .status(200)
         .json(httpResponses.success('success get ride data', result, 200));
     } catch (error) {
+      logger.error(url, 'failed get ride with id in ride controller', error);
       return res
         .status(422)
         .json(httpResponses.error(error));
@@ -17,12 +20,23 @@ module.exports = {
   },
 
   getRides: async (req, res) => {
+    const { url, query } = req;
+    const { page, limit } = query;
     try {
-      const result = await ridesServices.getRides();
+      logger.info(url, 'get all ride data in ride controller');
+      let result = {};
+
+      if (page && limit) {
+        result = await ridesServices.getRidesPagination(page, limit);
+      } else {
+        result = await ridesServices.getRides();
+      }
+
       return res
         .status(200)
         .json(httpResponses.success('success get all ride data', result, 200));
     } catch (error) {
+      logger.error(url, 'failed get all ride in ride controller', error);
       return res
         .status(422)
         .json(httpResponses.error(error));
@@ -30,9 +44,8 @@ module.exports = {
   },
 
   insertRide: async (req, res) => {
+    const { body, url } = req;
     try {
-      const { body, url } = req;
-
       logger.info(url, 'add new record on rides table', body);
 
       const {
@@ -59,6 +72,7 @@ module.exports = {
         .status(200)
         .json(httpResponses.success('success insert ride data', results, 200));
     } catch (error) {
+      logger.error(url, 'failed insert new ride in ride controller', error);
       return res
         .status(422)
         .json(httpResponses.error(error));

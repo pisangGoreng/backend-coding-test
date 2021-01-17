@@ -3,30 +3,32 @@ const { db } = require('../configs');
 const { utils } = require('../helpers');
 
 module.exports = {
-  getRide: (id) => {
-    const getRide = new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM Rides WHERE rideID='${id}'`, (err, row) => {
-        if (err) { reject(err); }
-
-        const modifiedRow = utils.convertRideKey(row, 'snakeCase');
-        resolve(modifiedRow);
-      });
-    });
-
-    return getRide;
+  getTotalRide: async () => {
+    const database = await db();
+    const totalRide = await database.get('SELECT count(*) as totalRide FROM Rides');
+    await database.close();
+    return totalRide;
   },
 
-  getRides: () => {
-    const getRides = new Promise((resolve, reject) => {
-      db.all('SELECT * FROM Rides', (err, rows) => {
-        if (err) { reject(err); }
+  getRide: async (id) => {
+    const database = await db();
+    const ride = await database.all(`SELECT * FROM Rides WHERE rideID='${id}'`);
+    await database.close();
+    return ride;
+  },
 
-        const modifiedRows = utils.convertRideKey(rows, 'snakeCase');
-        resolve(modifiedRows);
-      });
-    });
+  getRides: async () => {
+    const database = await db();
+    const rides = await database.all('SELECT * FROM Rides');
+    await database.close();
+    return rides;
+  },
 
-    return getRides;
+  getRidesPagination: async (limit, offset) => {
+    const database = await db();
+    const rides = await database.all(`SELECT * FROM Rides limit ${limit} OFFSET ${offset}`);
+    await database.close();
+    return rides;
   },
 
   insertRide: (payloads) => {
